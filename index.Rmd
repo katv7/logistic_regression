@@ -12,6 +12,7 @@ library(ggplot2)
 library(caret)
 library(caTools)
 library(ROSE)
+library(plotly)
 
 
 
@@ -86,12 +87,14 @@ levels(data$Repayment_Status_June) <- c('Paid on time','Payment delay for one mo
 ggplot(data = data,aes(x=Age_Years))+geom_histogram()
 
 
+
 ```
 
 ## Age Distribution with respect to Default Payment
 
 ```{r}
 ggplot(data = data,aes(x=Age_Years))+geom_density(aes(fill=Default_Payment),alpha=0.4)
+
 ```
 
 # Modelling

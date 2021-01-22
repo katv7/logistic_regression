@@ -183,12 +183,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.1</span> Total Age Distribution</h2>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="preliminary-analysis.html#cb14-1" aria-hidden="true"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> data,<span class="kw">aes</span>(<span class="dt">x=</span>Age_Years))<span class="op">+</span><span class="kw">geom_histogram</span>()</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="img1.png" width="672" /></p>
 </div>
 <div id="age-distribution-with-respect-to-default-payment" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Age Distribution with respect to Default Payment</h2>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="preliminary-analysis.html#cb16-1" aria-hidden="true"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> data,<span class="kw">aes</span>(<span class="dt">x=</span>Age_Years))<span class="op">+</span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">fill=</span>Default_Payment),<span class="dt">alpha=</span><span class="fl">0.4</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="img2.png" width="672" /></p>
 </div>
 </div>
             </section>
