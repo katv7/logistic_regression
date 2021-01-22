@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Bank Credit Card Fraud Detection Project with Logistic Regression</title>
+  <meta name="description" content="Bank Credit Card Fraud Detection Project with Logistic Regression" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Bank Credit Card Fraud Detection Project with Logistic Regression" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Bank Credit Card Fraud Detection Project with Logistic Regression" />
+  
+  
+  
+
+<meta name="author" content="Varun Katyal" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="data-preparation.html"/>
+<script src="libs/header-attrs-2.4/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Data Info</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#propotion-of-event-is-smaller-than-proportion-of-non-event"><i class="fa fa-check"></i><b>1.1</b> propotion of event is smaller than proportion of non event</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#no-of-rows-and-columns"><i class="fa fa-check"></i><b>1.2</b> no of rows and columns</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>2</b> data preparation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data-preparation.html"><a href="data-preparation.html#convert-to-factor"><i class="fa fa-check"></i><b>2.1</b> Convert to factor</a></li>
+<li class="chapter" data-level="2.2" data-path="data-preparation.html"><a href="data-preparation.html#re-labelling"><i class="fa fa-check"></i><b>2.2</b> Re-labelling</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html"><i class="fa fa-check"></i><b>3</b> Preliminary Analysis</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#total-age-distribution"><i class="fa fa-check"></i><b>3.1</b> Total Age Distribution</a></li>
+<li class="chapter" data-level="3.2" data-path="preliminary-analysis.html"><a href="preliminary-analysis.html#age-distribution-with-respect-to-default-payment"><i class="fa fa-check"></i><b>3.2</b> Age Distribution with respect to Default Payment</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>4</b> Modelling</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="modelling.html"><a href="modelling.html#splitting-data-into-train-and-test-set"><i class="fa fa-check"></i><b>4.1</b> Splitting Data into Train and Test Set</a></li>
+<li class="chapter" data-level="4.2" data-path="modelling.html"><a href="modelling.html#modelling-with-all-variables"><i class="fa fa-check"></i><b>4.2</b> 1) Modelling with All Variables</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="modelling.html"><a href="modelling.html#prediction-and-model-evaluation"><i class="fa fa-check"></i><b>4.2.1</b> Prediction and Model evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="modelling.html"><a href="modelling.html#model-with-removing-non-significant-variables"><i class="fa fa-check"></i><b>4.3</b> 2) Model with removing non significant variables</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="modelling.html"><a href="modelling.html#prediction-and-model-evaluation-1"><i class="fa fa-check"></i><b>4.3.1</b> Prediction and Model evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="modelling.html"><a href="modelling.html#over-sampling-data"><i class="fa fa-check"></i><b>4.4</b> 3)Over Sampling Data</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="modelling.html"><a href="modelling.html#modeling-again-with-same-previous-formula-but-with-oversampled-training-dataset"><i class="fa fa-check"></i><b>4.4.1</b> Modeling Again with same previous formula but with Oversampled Training Dataset</a></li>
+<li class="chapter" data-level="4.4.2" data-path="modelling.html"><a href="modelling.html#prediciton-and-model-evaluation"><i class="fa fa-check"></i><b>4.4.2</b> Prediciton and Model EValuation</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bank Credit Card Fraud Detection Project with Logistic Regression</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Bank Credit Card Fraud Detection Project with Logistic Regression</h1>
+<p class="author"><em>Varun Katyal</em></p>
+</div>
+<div id="data-info" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Data Info</h1>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true"></a>data &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;creditcard.csv&#39;</span>,<span class="dt">stringsAsFactors =</span> T)</span>
+<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true"></a>data &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(data)</span>
+<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true"></a></span>
+<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true"></a><span class="kw">str</span>(data)</span></code></pre></div>
+<pre><code>## tibble [30,000 x 25] (S3: tbl_df/tbl/data.frame)
+##  $ Customer.ID           : int [1:30000] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ Credit_Amount         : num [1:30000] 20000 220000 90000 50000 50000 50000 500000 200000 240000 20000 ...
+##  $ Gender                : int [1:30000] 2 2 2 2 1 1 1 2 2 1 ...
+##  $ Academic_Qualification: int [1:30000] 2 2 2 2 2 1 1 2 3 3 ...
+##  $ Marital               : int [1:30000] 1 2 2 1 1 2 2 2 1 2 ...
+##  $ Age_Years             : int [1:30000] 24 26 34 37 57 37 29 23 28 35 ...
+##  $ Repayment_Status_Jan  : int [1:30000] 2 0 0 0 0 0 0 0 0 0 ...
+##  $ Repayment_Status_Feb  : int [1:30000] 2 2 0 0 0 0 0 0 0 0 ...
+##  $ Repayment_Status_March: int [1:30000] 0 0 0 0 0 0 0 0 2 0 ...
+##  $ Repayment_Status_April: int [1:30000] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ Repayment_Status_May  : int [1:30000] 0 0 0 0 0 0 0 0 0 0 ...
+##  $ Repayment_Status_June : int [1:30000] 0 2 0 0 0 0 0 0 0 0 ...
+##  $ Jan_Bill_Amount       : num [1:30000] 3933 3683 39339 46990 8637 ...
+##  $ Feb_Bill_Amount       : num [1:30000] 3103 1735 14037 48333 5570 ...
+##  $ March_Bill_Amount     : num [1:30000] 689 2682 23559 49292 35835 ...
+##  $ April_Bill_Amount     : num [1:30000] 0 3272 24332 29324 20940 ...
+##  $ May_Bill_Amount       : num [1:30000] 0 3455 14848 28858 18146 ...
+##  $ June_Bill_Amount      : num [1:30000] 0 3261 15548 28547 18131 ...
+##  $ Previous_Payment_Jan  : num [1:30000] 0 0 1619 3000 3000 ...
+##  $ Previous_Payment_Feb  : num [1:30000] 679 2000 2500 2029 36672 ...
+##  $ Previous_Payment_March: num [1:30000] 0 1000 1000 1200 10000 657 59000 0 552 0 ...
+##  $ Previous_Payment_April: num [1:30000] 0 1000 1000 1100 9000 ...
+##  $ Previous_Payment_May  : num [1:30000] 0 0 1000 1069 689 ...
+##  $ Previous_Payment_June : num [1:30000] 0 2000 5000 1000 679 ...
+##  $ Default_Payment       : int [1:30000] 1 1 0 0 0 0 0 0 0 0 ...</code></pre>
+<div id="propotion-of-event-is-smaller-than-proportion-of-non-event" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> propotion of event is smaller than proportion of non event</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="index.html#cb5-1" aria-hidden="true"></a><span class="kw">prop.table</span>(<span class="kw">table</span>(data<span class="op">$</span>Default_Payment))</span></code></pre></div>
+<pre><code>## 
+##      0      1 
+## 0.7788 0.2212</code></pre>
+</div>
+<div id="no-of-rows-and-columns" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> no of rows and columns</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="index.html#cb7-1" aria-hidden="true"></a><span class="kw">nrow</span>(data)</span></code></pre></div>
+<pre><code>## [1] 30000</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="index.html#cb9-1" aria-hidden="true"></a><span class="kw">ncol</span>(data)</span></code></pre></div>
+<pre><code>## [1] 25</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="data-preparation.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

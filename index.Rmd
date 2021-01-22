@@ -1,0 +1,198 @@
+---
+title: "Bank Credit Card Fraud Detection Project with Logistic Regression"
+author: "Varun Katyal"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+---
+
+
+```{r  message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(caret)
+library(caTools)
+library(ROSE)
+
+
+
+```
+
+# Data Info
+
+
+```{r}
+data <- read.csv('creditcard.csv',stringsAsFactors = T)
+data <- as_tibble(data)
+
+str(data)
+```
+
+## propotion of event is smaller than proportion of non event
+
+```{r}
+prop.table(table(data$Default_Payment))
+
+```
+
+## no of rows and columns
+
+```{r}
+nrow(data)
+ncol(data)
+```
+
+# data preparation
+
+
+
+## Convert to factor
+
+```{r}
+cols.to.factor <- c("Gender","Academic_Qualification","Marital","Repayment_Status_Jan","Repayment_Status_Feb","Repayment_Status_March","Repayment_Status_April","Repayment_Status_May","Repayment_Status_June","Default_Payment")
+
+data[,cols.to.factor] <- lapply(data[,cols.to.factor],factor)
+
+str(data)
+```
+
+## Re-labelling
+
+```{r}
+levels(data$Gender) <-c("Male","Female")
+
+levels(data$Marital) <-c("Unknown","Married","Single","Do not Prefer To say")
+
+levels(data$Academic_Qualification) <- c('Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Others', 'Unknown')
+
+levels(data$Repayment_Status_Jan) <- c('Paid on time','Payment delay for one month', 'Payment delay for two months', 'Payment delay for three months', 'Payment delay for four months',  'Payment delay for five months',  'Payment delay for six months')
+
+levels(data$Repayment_Status_Feb) <- c('Paid on time','Payment delay for one month', 'Payment delay for two months', 'Payment delay for three months', 'Payment delay for four months',  'Payment delay for five months',  'Payment delay for six months')
+
+levels(data$Repayment_Status_March) <- c('Paid on time','Payment delay for one month', 'Payment delay for two months', 'Payment delay for three months', 'Payment delay for four months',  'Payment delay for five months',  'Payment delay for six months')
+
+levels(data$Repayment_Status_April) <- c('Paid on time','Payment delay for one month', 'Payment delay for two months', 'Payment delay for three months', 'Payment delay for four months',  'Payment delay for five months',  'Payment delay for six months')
+
+levels(data$Repayment_Status_May) <- c('Paid on time','Payment delay for one month', 'Payment delay for two months', 'Payment delay for three months', 'Payment delay for four months',  'Payment delay for five months',  'Payment delay for six months')
+
+levels(data$Repayment_Status_June) <- c('Paid on time','Payment delay for one month', 'Payment delay for two months', 'Payment delay for three months', 'Payment delay for four months',  'Payment delay for five months',  'Payment delay for six months')
+
+```
+
+# Preliminary Analysis
+
+## Total Age Distribution
+
+```{r}
+ggplot(data = data,aes(x=Age_Years))+geom_histogram()
+
+
+```
+
+## Age Distribution with respect to Default Payment
+
+```{r}
+ggplot(data = data,aes(x=Age_Years))+geom_density(aes(fill=Default_Payment),alpha=0.4)
+```
+
+# Modelling
+
+## Splitting Data into Train and Test Set 
+
+```{r}
+set.seed(10)
+
+splitter  <- sample.split(data$Default_Payment ,SplitRatio = 0.8)
+
+train <- data[splitter,]
+test <- data[!splitter,]
+
+
+```
+
+## 1) Modelling with All Variables
+```{r}
+
+model <- glm(Default_Payment~.-Customer.ID,data=train,family = binomial())
+
+summary(model)
+
+
+
+```
+
+
+### Prediction and Model evaluation 
+
+```{r}
+pred <- predict(model,newdata = test,type = 'response')
+
+test$prd <- factor(ifelse(pred>0.5,1,0))
+
+cf <- confusionMatrix(test$prd,reference = test$Default_Payment,positive='1')
+cf
+
+```
+
+* Although Accuracy is high 82% but senstivity is low at 32%
+* Model does not predict Positive Class(Default Payment=1, event) well enough as compared to non-event( Default Payment=0)
+
+
+
+## 2) Model with removing non significant variables
+
+```{r}
+fml <- formula(Default_Payment~Credit_Amount+Marital+Gender+Academic_Qualification+Age_Years+Repayment_Status_Jan+Previous_Payment_Jan)
+
+model2 <- glm(fml,data=train,family = binomial())
+summary(model2)
+```
+
+### Prediction and Model evaluation 
+
+
+```{r}
+pred2 <- predict(model2,newdata = test,type = 'response')
+
+test$prd2 <- factor(ifelse(pred2>0.5,1,0))
+
+cf2 <- confusionMatrix(test$prd2,reference = test$Default_Payment,positive='1')
+cf2
+```
+
+* Model does not improve or worse
+* Accuracy and senstivity are about the same at around 82% and 31% respectively
+
+
+
+
+## 3)Over Sampling Data
+
+* Handling class Imbalance problem using ROSE package
+* Making proportion of default payment status '1' same as '0'
+
+```{r}
+
+newtrainsample <- ovun.sample(fml,data = train,method = 'over',N=37382)$data
+summary(newtrainsample)
+```
+* Now Proportion of Event('1') is same as Non Event('1')
+
+### Modeling Again with same previous formula but with Oversampled Training Dataset 
+
+```{r}
+model3 <- glm(fml,data=newtrainsample,family = binomial())
+summary(model3)
+```
+
+### Prediciton and Model EValuation
+
+```{r}
+pred3 <- predict(model3,newdata = test,type = 'response')
+test$prd3 <- factor(ifelse(pred3>0.5,1,0))
+
+cf3 <- confusionMatrix(test$prd3,reference = test$Default_Payment,positive = '1')
+cf3
+```
+
+* now this model has improved sensitivity of 55% significantly higher than previous models 31-32%
+* However accuracy has reduced slightly to 78%
